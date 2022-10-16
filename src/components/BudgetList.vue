@@ -46,7 +46,7 @@ export default {
 <style scoped>
   .buget-list-wrap{
     max-width: 500px;
-    margin: auto;
+    margin: auto auto 80px;
   }
 
   .list-item {
