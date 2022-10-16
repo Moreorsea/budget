@@ -1,10 +1,12 @@
 <template>
   <ElCard class="form-card">
     <ElForm :model="formData" :rules="rules" label-position="top" ref="addItemForm">
+      <ElFormItem label="Type" prop="type">
         <ElSelect class="type-select" label="Type" prop="type" v-model="formData.type" placeholder="Choose type...">
           <ElOption label="Income" value="INCOME" />
           <ElOption label="Outcome" value="OUTCOME" />
         </ElSelect>
+      </ElFormItem>
 
         <ElFormItem label="Comments" prop="comment">
           <ElInput v-model="formData.comment" />
@@ -23,7 +25,7 @@ export default {
   name: "FormElement",
   data: () => ({
     formData: {
-      type: "INCOME",
+      type: "",
       comment: "",
       value: "",
       icon: "",
