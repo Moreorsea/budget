@@ -36,7 +36,8 @@ export default {
   }),
   computed: {
     totalBalance() {
-      return Object.values(this.list).reduce((acc, item) => acc + item.value, 0);
+      const balance = Object.values(this.list).reduce((acc, item) => acc + item.value, 0);
+      return balance;
     }
   },
   methods: {

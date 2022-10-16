@@ -1,5 +1,5 @@
 <template>
-  <div class="total-value">Balance: {{total}}</div>
+  <div class="total-value" :class="cls">Balance: {{total}}</div>
 </template>
 
 <script>
@@ -9,6 +9,27 @@ export default {
     total: {
       type: Number,
       default: 0,
+    },
+  },
+  data: () => ({
+    cls: 'normal',
+  }),
+  watch: {
+    total: {
+      handler(newVal) {
+        this.computedTitleColor(newVal);
+      }
+    }
+  },
+  methods: {
+    computedTitleColor(value) {
+      if(value === 0) {
+          this.cls = 'normal';
+        } else if(value < 0) {
+          this.cls ='critical';
+        } else {
+          this.cls ='success';
+        }
     }
   }
 }
@@ -20,5 +41,17 @@ export default {
     text-transform: uppercase;
     padding: 20px;
     text-align: center;
+  }
+
+  .normal {
+    color: #000000;
+  }
+
+  .critical {
+    color: #ff0000;
+  }
+
+  .success {
+    color: #0dbd13;
   }
 </style>
