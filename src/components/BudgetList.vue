@@ -35,7 +35,8 @@ export default {
   },
   methods: {
     deleteItem(id) {
-      this.$emit('deleteIItem', id);
+      this.$emit('toggle-dialog-visible');
+      sessionStorage.setItem('itemId', id);
     }
   }
 }

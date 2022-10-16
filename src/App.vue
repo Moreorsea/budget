@@ -2,7 +2,16 @@
   <div id="app">
     <FormElement @submitForm="onSubmitForm" />
     <TotalBalance :total="totalBalance" />
-    <BudgetList :list="list" @deleteIItem="onDeleteItem" />
+    <BudgetList
+      :list="list"
+      @deleteIItem="onDeleteItem"
+      @toggle-dialog-visible="onToggleDialogVisibleFlug"
+    />
+    <DialogComponent
+      @toggle-dialog-visible="onToggleDialogVisibleFlug"
+      :visible="dialogVisible"
+      @deleteIItem="onDeleteItem"
+    />
   </div>
 </template>
 
@@ -10,6 +19,7 @@
 import BudgetList from '@/components/BudgetList';
 import TotalBalance from '@/components/TotalBalance';
 import FormElement from '@/components/FormElement';
+import DialogComponent from '@/components/DialogComponent';
 
 export default {
   name: 'App',
@@ -17,6 +27,7 @@ export default {
     BudgetList,
     TotalBalance,
     FormElement,
+    DialogComponent,
   },
   data: () => ({
     list: {
@@ -32,7 +43,8 @@ export default {
         comment: "Some outcome comment",
         id: 2,
       }
-    }
+    },
+    dialogVisible: false,
   }),
   computed: {
     totalBalance() {
@@ -43,12 +55,19 @@ export default {
   methods: {
     onDeleteItem(id) {
       this.$delete(this.list, id);
+      this.onToggleDialogVisibleFlug();
     },
     onSubmitForm(value) {
       this.$set(this.list,Object.keys(this.list).length + 1, {
         ...value,
         id: String(Math.random())
       })
+    },
+    onToggleDialogVisibleFlug() {
+      this.dialogVisible = !this.dialogVisible;
+      if(!this.dialogVisible) {
+        sessionStorage.removeItem('itemId');
+      }
     },
   }
 }
