@@ -26,6 +26,8 @@ export default {
       type: "INCOME",
       comment: "",
       value: 0,
+      icon: "",
+      classTitle: ""
     },
     rules: {
       type: [

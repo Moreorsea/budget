@@ -36,12 +36,16 @@ export default {
         value: 100,
         comment: "Some comment",
         id: 1,
+        icon: "el-icon-top",
+        classTitle: "success",
       },
       2: {
         type: "OUTCOME",
         value: -50,
         comment: "Some outcome comment",
         id: 2,
+        icon: "el-icon-bottom",
+        classTitle: "critical"
       }
     },
     dialogVisible: false,
@@ -60,7 +64,9 @@ export default {
     onSubmitForm(value) {
       this.$set(this.list,Object.keys(this.list).length + 1, {
         ...value,
-        id: String(Math.random())
+        id: String(Math.random()),
+        icon: value.type === 'INCOME' ? "el-icon-top" : "el-icon-bottom",
+        classTitle: value.type === 'INCOME' ? "success" : "critical"
       })
     },
     onToggleDialogVisibleFlug() {
