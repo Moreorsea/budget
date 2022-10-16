@@ -25,7 +25,7 @@ export default {
     formData: {
       type: "INCOME",
       comment: "",
-      value: 0,
+      value: "",
       icon: "",
       classTitle: ""
     },
