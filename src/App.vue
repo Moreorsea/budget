@@ -2,6 +2,9 @@
   <div id="app">
     <FormElement @submitForm="onSubmitForm" />
     <TotalBalance :total="totalBalance" />
+    <SortableButton
+      @sorted="onSortedList"
+    />
     <BudgetList
       :list="list"
       @deleteIItem="onDeleteItem"
@@ -20,6 +23,7 @@ import BudgetList from '@/components/BudgetList';
 import TotalBalance from '@/components/TotalBalance';
 import FormElement from '@/components/FormElement';
 import DialogComponent from '@/components/DialogComponent';
+import SortableButton from '@/components/SortableBtn.vue';
 
 export default {
   name: 'App',
@@ -28,6 +32,7 @@ export default {
     TotalBalance,
     FormElement,
     DialogComponent,
+    SortableButton,
   },
   data: () => ({
     list: {
@@ -46,7 +51,39 @@ export default {
         id: 2,
         icon: "el-icon-bottom",
         classTitle: "critical"
-      }
+      },
+      3: {
+        type: "OUTCOME",
+        value: -5000,
+        comment: "Корм котикам",
+        id: 3,
+        icon: "el-icon-bottom",
+        classTitle: "critical"
+      },
+      4: {
+        type: "INCOME",
+        value: 3500,
+        comment: "Подработка",
+        id: 4,
+        icon: "el-icon-top",
+        classTitle: "success",
+      },
+      5: {
+        type: "OUTCOME",
+        value: -600,
+        comment: "Торт",
+        id: 5,
+        icon: "el-icon-bottom",
+        classTitle: "critical"
+      },
+      6: {
+        type: "OUTCOME",
+        value: -600,
+        comment: "Посмотреть на зубров",
+        id: 5,
+        icon: "el-icon-bottom",
+        classTitle: "critical"
+      },
     },
     dialogVisible: false,
   }),
@@ -75,7 +112,24 @@ export default {
         sessionStorage.removeItem('itemId');
       }
     },
-  }
+    onSortedList(rule) {
+      const elements = JSON.parse(sessionStorage.getItem('elements'));
+      if(rule === 'ALL') {
+        this.list = elements;
+      } else {
+        let sorted = {};
+        for(let key in elements) {
+          if(elements[key].type === rule) {
+            sorted[key] = elements[key];
+          }
+        }
+        this.list = sorted;
+      }
+    }
+  },
+  mounted() {
+    sessionStorage.setItem('elements', JSON.stringify(this.list));
+  },
 }
 </script>
 
