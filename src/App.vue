@@ -101,10 +101,12 @@ export default {
     onSubmitForm(value) {
       this.$set(this.list,Object.keys(this.list).length + 1, {
         ...value,
+        value: value.type === 'OUTCOME' && value.value > 0 ? value.value * -1 : value.value,
         id: String(Math.random()),
         icon: value.type === 'INCOME' ? "el-icon-top" : "el-icon-bottom",
         classTitle: value.type === 'INCOME' ? "success" : "critical"
       })
+      sessionStorage.setItem('elements', JSON.stringify(this.list));
     },
     onToggleDialogVisibleFlug() {
       this.dialogVisible = !this.dialogVisible;
