@@ -6,7 +6,7 @@
       @sorted="onSortedList"
     />
     <BudgetList
-      :list="list"
+      :list="budgetList"
       @deleteIItem="onDeleteItem"
       @toggle-dialog-visible="onToggleDialogVisibleFlug"
     />
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
+
 import BudgetList from '@/components/BudgetList';
 import TotalBalance from '@/components/TotalBalance';
 import FormElement from '@/components/FormElement';
@@ -35,77 +37,24 @@ export default {
     SortableButton,
   },
   data: () => ({
-    list: {
-      1: {
-        type: "INCOME",
-        value: 100,
-        comment: "Some comment",
-        id: 1,
-        icon: "el-icon-top",
-        classTitle: "success",
-      },
-      2: {
-        type: "OUTCOME",
-        value: -50,
-        comment: "Some outcome comment",
-        id: 2,
-        icon: "el-icon-bottom",
-        classTitle: "critical"
-      },
-      3: {
-        type: "OUTCOME",
-        value: -5000,
-        comment: "Корм котикам",
-        id: 3,
-        icon: "el-icon-bottom",
-        classTitle: "critical"
-      },
-      4: {
-        type: "INCOME",
-        value: 3500,
-        comment: "Подработка",
-        id: 4,
-        icon: "el-icon-top",
-        classTitle: "success",
-      },
-      5: {
-        type: "OUTCOME",
-        value: -600,
-        comment: "Торт",
-        id: 5,
-        icon: "el-icon-bottom",
-        classTitle: "critical"
-      },
-      6: {
-        type: "OUTCOME",
-        value: -600,
-        comment: "Посмотреть на зубров",
-        id: 5,
-        icon: "el-icon-bottom",
-        classTitle: "critical"
-      },
-    },
     dialogVisible: false,
   }),
   computed: {
+    ...mapGetters(["budgetList"]),
     totalBalance() {
-      const balance = Object.values(this.list).reduce((acc, item) => acc + item.value, 0);
+      const balance = Object.values(this.budgetList).reduce((acc, item) => acc + item.value, 0);
       return balance;
-    }
+    },
+
   },
   methods: {
+    ...mapActions(["addNewBudgetItem", "deleteBudgetItem", "setBudgetList"]),
     onDeleteItem(id) {
-      this.$delete(this.list, id);
+      this.deleteBudgetItem(id);
       this.onToggleDialogVisibleFlug();
     },
     onSubmitForm(value) {
-      this.$set(this.list,Object.keys(this.list).length + 1, {
-        ...value,
-        value: value.type === 'OUTCOME' && value.value > 0 ? value.value * -1 : value.value,
-        id: String(Math.random()),
-        icon: value.type === 'INCOME' ? "el-icon-top" : "el-icon-bottom",
-        classTitle: value.type === 'INCOME' ? "success" : "critical"
-      })
+      this.addNewBudgetItem(value);
       sessionStorage.setItem('elements', JSON.stringify(this.list));
     },
     onToggleDialogVisibleFlug() {
@@ -116,8 +65,9 @@ export default {
     },
     onSortedList(rule) {
       const elements = JSON.parse(sessionStorage.getItem('elements'));
+
       if(rule === 'ALL') {
-        this.list = elements;
+        this.setBudgetList(elements);
       } else {
         let sorted = {};
         for(let key in elements) {
@@ -125,12 +75,12 @@ export default {
             sorted[key] = elements[key];
           }
         }
-        this.list = sorted;
+        this.setBudgetList(sorted);
       }
     }
   },
   mounted() {
-    sessionStorage.setItem('elements', JSON.stringify(this.list));
+    sessionStorage.setItem('elements', JSON.stringify(this.budgetList));
   },
 }
 </script>

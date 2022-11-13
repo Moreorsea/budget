@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
 export default {
   name: "BudgetList",
   props: {
@@ -32,7 +33,7 @@ export default {
   computed: {
     isEmpty() {
       return !Object.keys(this.list).length;
-    }
+    },
   },
   methods: {
     deleteItem(id) {
