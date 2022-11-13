@@ -74,9 +74,6 @@ export default new Vuex.Store({
     DELETE_ITEM(state, id) {
       Vue.delete(state.list, id);
     },
-    UPDATE_LIST(state, list) {
-      console.log(state, list);
-    },
     SET_BUDGET_LIST(state, list) {
       state.list = list;
     }
@@ -87,9 +84,6 @@ export default new Vuex.Store({
     },
     deleteBudgetItem({commit}, id) {
       commit('DELETE_ITEM', id);
-    },
-    updateList({commit}, list) {
-      commit('UPDATE_LIST', list);
     },
     setBudgetList({commit}, list) {
       commit('SET_BUDGET_LIST', list);
